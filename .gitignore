@@ -1,0 +1,15 @@
+# Ignore all bin directories
+bin
+
+# Ignore all files ending with ~
+*~
+
+# Ignore the target directory
+# Matches "target" in any subfolder
+target/ 
+
+# Ignore metadata
+.metadata
+
+# Configure Git to use this file
+# as global .gitignore
