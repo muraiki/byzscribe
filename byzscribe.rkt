@@ -41,6 +41,7 @@
     (record-element! 'name name)))
 
 ; NEUME DEFINITIONS ---------------
+; Download fonts from http://www.stanthonysmonastery.org/music/ByzMusicFonts.html
 
 (define-neume ison
   (list "ison" "0")
