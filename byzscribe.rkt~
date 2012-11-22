@@ -193,6 +193,3 @@
 )
 
 (render test-chant)
-
-; TODO LIST --------------------------
-; Allow aliases instead of full neume name
