@@ -11,5 +11,4 @@ target/
 # Ignore metadata
 .metadata
 
-# Configure Git to use this file
-# as global .gitignore
+compiled/
