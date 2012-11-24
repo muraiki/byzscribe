@@ -6,12 +6,24 @@
 (define NEUME-SIZE 28)
 (define FONT-SIZE 18)
 
+; STRUCTS -----------------------
+
 ; phrase
 ; defines a syllable and accompanying notes
 (struct phrase
   (text                   ; string: the word to be displayed
    notes)                 ; list-of-neumes
   #:transparent)
+
+; MACROS -------------------------
+
+; Macro to make defining lispy chant a bit more readable
+(define-syntax-rule (chant [word (notes ...)] ...)
+  (list [phrase word (list notes ...)] ...))
+
+; Without macro (for reference)
+;(define test-chant (list (phrase "Ky" (list ison klasma)) (phrase "ri" (list oligon)) (phrase "e" (list ison apostrophos gorgon-right))))
+
 
 ; FUNCTION DEFINITIONS ---------------------
 
@@ -39,13 +51,22 @@
     [(empty? notes) ""]
     [else (string-append (neume-character-code (first notes)) (concat-neumes (rest notes)))]))
 
-; DEMONSTRATION ---------------------
+; print-all-neumes : hash -> list-of-images
+; given a names hash generate a list of images of every neume and its name
+; call using default hash with (print-all-neumes neume-names)
+; will insert an ison for neumes that modify a preceeding neume (otherwise it will not print)
+; Because it is a hash, it is unordered output. In the future, it'd be nice to have a better function for this
+; that can be used for documentation, but this will suffice for now.
+(define (print-all-neumes neume-hash)
+  (for/list ([(key value) neume-hash])
+    (cond
+      [(false? (neume-modifier? value)) (render (list (phrase (first (neume-aliases value)) (list value))))]
+      [else
+       (render (list (phrase (first (neume-aliases value)) (list ison value))))])))
+       
+; DEMONSTRATION OF USE ---------------------
 
-; Without macro
-;(define test-chant (list (phrase "Ky" (list ison klasma)) (phrase "ri" (list oligon)) (phrase "e" (list ison apostrophos gorgon-right))))
-
-(define-syntax-rule (chant [word (notes ...)] ...)
-  (list [phrase word (list notes ...)] ...))
+; Use the program in the following way:
 
 (define test-chant
   (chant
@@ -57,6 +78,5 @@
   )
 )
 
-(render test-chant)
-
-;
+; Run the following in the interaction window below to render the test chant:
+; (render test-chant)
