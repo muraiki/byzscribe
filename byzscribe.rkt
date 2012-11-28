@@ -52,17 +52,25 @@
     [else (string-append (neume-character-code (first notes)) (concat-neumes (rest notes)))]))
 
 ; print-all-neumes : hash -> list-of-images
-; given a names hash generate a list of images of every neume and its name
 ; call using default hash with (print-all-neumes neume-names)
+(define (print-all-neumes neume-hash)
+  (apply above/align "left" (list-all-neumes neume-hash)))
+
+; list-all-neumes: hash -> list-of-images
+; given a names hash generate a list of images of every neume and its name
 ; will insert an ison for neumes that modify a preceeding neume (otherwise it will not print)
 ; Because it is a hash, it is unordered output. In the future, it'd be nice to have a better function for this
-; that can be used for documentation, but this will suffice for now.
-(define (print-all-neumes neume-hash)
+; that has a more ordered output for documentation, but this will suffice for now.
+; TODO: See if I can get the chant macro to work here instead of using (list (phrase etc.
+(define (list-all-neumes neume-hash)
   (for/list ([(key value) neume-hash])
     (cond
-      [(false? (neume-modifier? value)) (render (list (phrase (first (neume-aliases value)) (list value))))]
+      [(false? (neume-modifier? value))
+       (render
+        (list (phrase (first (neume-aliases value)) (list value))))]
       [else
-       (render (list (phrase (first (neume-aliases value)) (list ison value))))])))
+       (render
+        (list (phrase (first (neume-aliases value)) (list ison value))))])))
        
 ; DEMONSTRATION OF USE ---------------------
 

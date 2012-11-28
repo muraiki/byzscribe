@@ -30,21 +30,21 @@
     (record-element! 'name name)))
 
 ; NEUME DEFINITIONS ---------------
-; Download fonts from http://www.stanthonysmonastery.org/music/ByzMusicFonts.html
+; Download fonts from http://www.dblab.ntua.gr/~stef/mysite/php/index.php?pg=pgbyz&lang=en
 
 ; Neutral --------------
 
 (define-neume ison
   (list "ison" "0")
-  "EZ Psaltica"
-  "0"
+  "BZ Byzantina"
+  "a"
   #f
   )
 
 (define-neume ison+petaste
   (list "ison+petaste" "ip" "0f")
-  "EZ Psaltica"
-  "p"
+  "BZ Byzantina"
+  "A"
   #f
   )
 
@@ -52,87 +52,92 @@
 
 (define-neume oligon
   (list "oligon" "+1")
-  "EZ Psaltica"
-  "1"
+  "BZ Byzantina"
+  "s"
   #f
   )
 
 (define-neume oligon+kentema-below
   (list "oligon+kentema-below")
-  "EZ Psaltica"
-  "2"
+  "BZ Byzantina"
+  "d"
   #f
   )
 
 (define-neume oligon+kentema-above
   (list "oligon+kentema-above" "+3")
-  "EZ Psaltica"
-  "3"
+  "BZ Byzantina"
+  "f"
+  #f
+  )
+
+(define-neume oligon+kentemata-below
+  (list "oligon+kentemata-below")
+  "BZ Byzantina"
+  "c"
   #f
   )
 
 (define-neume oligon+ypsele-right
   (list "oligon+ypsele-right" "+4")
-  "EZ Psaltica"
-  "4"
+  "BZ Byzantina"
+  "g"
   #f
   )
 
 (define-neume oligon+ypsele-left
   (list "oligon+ypsele-left" "+5")
-  "EZ Psaltica"
-  "5"
+  "BZ Loipa"
+  "A"
   #f
   )
 
 (define-neume oligon+kentema+ypsele-right
   (list "oligon+kentema+ypsele-right" "+6")
-  "EZ Psaltica"
-  "6"
+  "BZ Loipa"
+  "a"
   #f
   )
 
 (define-neume oligon+kentema+ypsele-center
   (list "oligon+kentema+ypsele-center" "+7")
-  "EZ Psaltica"
-  "7"
+  "BZ Loipa"
+  "f"
   #f
   )
 
 (define-neume oligon+ypsele-double
   (list "oligon+ypsele-double" "+8")
-  "EZ Psaltica"
-  "8"
+  "BZ Loipa"
+  "g"
   #f
   )
 
 (define-neume oligon+kentemata+ypsele-double
   (list "oligon+kentemata+ypsele-double" "+9")
-  "EZ Psaltica"
-  "9"
+  "BZ Loipa"
+  "h"
   #f
   )
 
-; left off here
-
 (define-neume kentemata
   (list "kentemata" "+1u")
-  "EZ Psaltica"
-  "`"
+  "BZ Byzantina"
+  "x"
   #f
   )
 
 (define-neume petaste
   (list "petaste" "+1f")
-  "EZ Psaltica"
-  "q"
+  "BZ Byzantina"
+  "S"
   #f
   )
 
 (define-neume oligon+kentema-side
   (list "oligon+kentema-side" "oks")
-  "EZ Psaltica"
-  "1~"
+  "BZ Byzantina"
+  "sC"
   #f
   )
 
@@ -140,15 +145,15 @@
 
 (define-neume apostrophos
   (list "apostrophos" "-1")
-  "EZ Psaltica"
-  "!"
+  "BZ Byzantina"
+  "j"
   #f
   )
 
 (define-neume elaphron
   (list "elaphron" "-2")
-  "EZ Psaltica"
-  "@"
+  "BZ Byzantina"
+  "k"
   #f
   )
 
@@ -156,57 +161,50 @@
 
 (define-neume klasma
   (list "klasma" "k")
-  "EZ Psaltica"
-  "a"
+  "BZ Byzantina"
+  "u"
   #t
   )
 
 (define-neume klasma-right
   (list "klasma-right" "kr")
-  "EZ Psaltica"
-  "A"
+  "BZ Byzantina"
+  "i"
   #t
   )
 
 (define-neume klasma-left
   (list "klasma-left" "kl")
-  "EZ Psaltica"
-  "Z"
+  "BZ Byzantina"
+  "U"
   #t
   )
 
 (define-neume gorgon
   (list "gorgon" "g")
-  "EZ Psaltica"
-  "s"
+  "BZ Byzantina"
+  "e"
   #t
   )
 
 (define-neume gorgon-right
   (list "gorgon-right" "g-r")
-  "EZ Psaltica"
-  "S"
+  "BZ Byzantina"
+  "r"
   #t
   )
 
 (define-neume ypporoe
   (list "ypporoe" "yp")
-  "EZ Psaltica"
-  ")"
+  "BZ Byzantina"
+  "'"
   #f
   )
 
 (define-neume ypporoe-gorgon
   (list "ypporoe-gorgon" "yp-gorgon")
-  "EZ Psaltica"
-  "-"
-  #f
-  )
-
-(define-neume oligon+kentemata-below
-  (list "oligon+kentemata-below" "okb")
-  "EZ Psaltica"
-  "o"
+  "BZ Byzantina"
+  ":"
   #f
   )
 
@@ -214,7 +212,7 @@
 
 (define-neume martyria-vou
   (list "martyria-vou" "mv")
-  "EZ Psaltica"
-  "cC"
+  "BZ Byzantina"
+  "7&"
   #f
   )
