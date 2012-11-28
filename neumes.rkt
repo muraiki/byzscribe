@@ -316,13 +316,6 @@
   #t
   )
 
-(define-neume klasma-below
-  (list "klasma-below" "kb")
-  "BZ Byzantina"
-  "I"
-  #t
-  )
-
 (define-neume klasma-right
   (list "klasma-right" "kr")
   "BZ Byzantina"
@@ -334,6 +327,21 @@
   (list "klasma-left" "kl")
   "BZ Byzantina"
   "U"
+  #t
+  )
+
+(define-neume klasma-below
+  (list "klasma-below" "kb")
+  "BZ Byzantina"
+  "I"
+  #t
+  )
+
+; Currently doesn't work because it requires mixing fonts
+(define-neume klasma-below-right
+  (list "klasma-below-right" "kbr")
+  "BZ Loipa"
+  "z"
   #t
   )
 

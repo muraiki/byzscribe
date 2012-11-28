@@ -30,7 +30,6 @@
 ; Without macro (for reference)
 ;(define test-chant (list (phrase "Ky" (list ison klasma)) (phrase "ri" (list oligon)) (phrase "e" (list ison apostrophos gorgon-right))))
 
-
 ; FUNCTION DEFINITIONS ---------------------
 
 ; render : list of phrases -> image
@@ -77,6 +76,13 @@
       [else
        (render
         (list (phrase (first (neume-aliases value)) (list ison value))))])))
+
+; chant-page : list-of-chant -> image
+(define (chant-page list-of-chant)
+  (cond
+    [(empty? list-of-chant) (square 0 "solid" "white")]
+    [else
+     (above/align "left" (render (first list-of-chant)) (chant-page (rest list-of-chant)))]))
        
 ; DEMONSTRATION OF USE ---------------------
 
@@ -94,3 +100,6 @@
 
 ; Run the following in the interaction window below to render the test chant:
 ; (render test-chant)
+
+; Run the following to render multiple lines of chant as one image:
+; (chant-page (list test-chant test-chant test-chant))
