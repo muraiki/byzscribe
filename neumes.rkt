@@ -373,7 +373,7 @@
   )
 
 (define-neume triple-right
-  (list "triple")
+  (list "triple-right")
   "BZ Byzantina"
   ")"
   #t
