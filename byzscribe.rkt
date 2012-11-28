@@ -1,10 +1,16 @@
 #lang racket
 
+; Download neume fonts from http://www.dblab.ntua.gr/~stef/mysite/php/index.php?pg=pgbyz&lang=en
+; Download EZ Omega font from http://www.stanthonysmonastery.org/music/ByzMusicFonts.html
+;   EZ Omega is in the EZ Byzantine music fonts package. It is used for rendering English text.
+;   If you want to use a different text font, modify (define TEXT-FONT) below.
+
 (require 2htdp/image)
 (require "neumes.rkt")
 
 (define NEUME-SIZE 28)
 (define FONT-SIZE 18)
+(define TEXT-FONT "EZ Omega")
 
 ; STRUCTS -----------------------
 
@@ -37,7 +43,7 @@
 (define (render-phrase a-phrase)
   (above/align "left"
                (render-neumes (phrase-notes a-phrase))
-               (text/font (phrase-text a-phrase) FONT-SIZE "black" "EZ Omega" 'modern 'normal 'normal #f)))
+               (text/font (phrase-text a-phrase) FONT-SIZE "black" TEXT-FONT 'modern 'normal 'normal #f)))
 
 ; render-neumes : list of neumes -> image
 ; for now uses same font for whole phrase

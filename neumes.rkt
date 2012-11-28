@@ -24,13 +24,16 @@
 (define (neume-element->neume-name obj)  (hash-ref neume-elements obj))
 
 ; macro to make defining neumes easier
+; TODO: Modify macro so that the first alias is the name itself, to eliminate repetition when writing new neumes
 (define-syntax-rule (define-neume name aliases font character-code modifier?)
   (begin
     (define name (neume aliases font character-code modifier?))
     (record-element! 'name name)))
 
 ; NEUME DEFINITIONS ---------------
-; Download fonts from http://www.dblab.ntua.gr/~stef/mysite/php/index.php?pg=pgbyz&lang=en
+; Download neume fonts from http://www.dblab.ntua.gr/~stef/mysite/php/index.php?pg=pgbyz&lang=en
+; Download EZ Omega font from http://www.stanthonysmonastery.org/music/ByzMusicFonts.html
+;   use the EZ Byzantine music fonts package. EZ Omega is used for rendering English text.
 
 ; Neutral --------------
 
@@ -57,6 +60,13 @@
   #f
   )
 
+(define-neume oligon-petaste
+  (list "oligon-petaste" "+2")
+  "BZ Byzantina"
+  "S"
+  #f
+  )
+
 (define-neume oligon+kentema-below
   (list "oligon+kentema-below")
   "BZ Byzantina"
@@ -64,10 +74,17 @@
   #f
   )
 
-(define-neume oligon+kentema-above
+(define-neume oligon+kentema
   (list "oligon+kentema-above" "+3")
   "BZ Byzantina"
   "f"
+  #f
+  )
+
+(define-neume petaste+kentema
+  (list "petaste+kentema-above" "+3")
+  "BZ Byzantina"
+  "F"
   #f
   )
 
@@ -150,10 +167,143 @@
   #f
   )
 
+(define-neume apostrophos-petaste
+  (list "apostrophos-petaste" "-1")
+  "BZ Byzantina"
+  "J"
+  #f
+  )
+
 (define-neume elaphron
   (list "elaphron" "-2")
   "BZ Byzantina"
   "k"
+  #f
+  )
+
+(define-neume elaphron-petaste
+  (list "elaphron" "-2f")
+  "BZ Byzantina"
+  "K"
+  #f
+  )
+
+(define-neume syneches-elaphron
+  (list "syneches-elaphron")
+  "BZ Byzantina"
+  "h"
+  #f
+  )
+
+(define-neume syneches-elaphron-petaste
+  (list "syneches-elaphron-petaste")
+  "BZ Byzantina"
+  "H"
+  #f
+  )
+
+(define-neume elaphron-apostrophos
+  (list "elaphron-apostrophos" "-3")
+  "BZ Byzantina"
+  "l"
+  #f
+  )
+
+(define-neume elaphron-apostrophos-petaste
+  (list "elaphron-apostrophos-petaste" "-3f")
+  "BZ Byzantina"
+  "L"
+  #f
+  )
+
+(define-neume kamele
+  (list "kamele" "-4")
+  "BZ Byzantina"
+  ";"
+  #f
+  )
+
+(define-neume kamele-petaste
+  (list "kamele" "-4f")
+  "BZ Loipa"
+  "x"
+  #f
+  )
+
+(define-neume kamele-apostrophos
+  (list "kamele-apostrophos" "-5")
+  "BZ Loipa"
+  "x"
+  #f
+  )
+
+(define-neume kamele-apostrophos-petaste
+  (list "kamele-apostrophos-petaste" "-5f")
+  "BZ Loipa"
+  "X"
+  #f
+  )
+
+(define-neume kamele-elaphron
+  (list "kamele-elaphron" "-6")
+  "BZ Loipa"
+  "c"
+  #f
+  )
+
+(define-neume kamele-elaphron-petaste
+  (list "kamele-elaphron" "-6f")
+  "BZ Loipa"
+  "C"
+  #f
+  )
+
+(define-neume kamele-elaphron-apostrophos
+  (list "kamele-elaphron-apostrophos" "-7")
+  "BZ Loipa"
+  "v"
+  #f
+  )
+
+(define-neume kamele-elaphron-apostrophos-petaste
+  (list "kamele-elaphron-apostrophos-petaste" "-7")
+  "BZ Loipa"
+  "V"
+  #f
+  )
+
+(define-neume kamele-double
+  (list "kamele-double" "-8")
+  "BZ Loipa"
+  "b"
+  #f
+  )
+
+(define-neume kamele-double-petaste
+  (list "kamele-double-petaste" "-8f")
+  "BZ Loipa"
+  "B"
+  #f
+  )
+
+(define-neume ypporoe
+  (list "ypporoe" "yp")
+  "BZ Byzantina"
+  "'"
+  #f
+  )
+
+(define-neume ypporoe-gorgon
+  (list "ypporoe-gorgon" "yp-gorgon")
+  "BZ Byzantina"
+  ":"
+  #f
+  )
+
+(define-neume ypporoe-petaste
+  (list "ypporoe-petaste" "yp-f")
+  "BZ Byzantina"
+  "\""
   #f
   )
 
@@ -163,6 +313,13 @@
   (list "klasma" "k")
   "BZ Byzantina"
   "u"
+  #t
+  )
+
+(define-neume klasma-below
+  (list "klasma-below" "kb")
+  "BZ Byzantina"
+  "I"
   #t
   )
 
@@ -180,6 +337,49 @@
   #t
   )
 
+(define-neume aple
+  (list "aple")
+  "BZ Byzantina"
+  "8"
+  #t
+  )
+
+(define-neume aple-right
+  (list "aple-right")
+  "BZ Byzantina"
+  "*"
+  #t
+  )
+
+(define-neume diple
+  (list "diple")
+  "BZ Byzantina"
+  "9"
+  #t
+  )
+
+(define-neume diple-right
+  (list "diple-right")
+  "BZ Byzantina"
+  "("
+  #t
+  )
+
+(define-neume triple
+  (list "triple")
+  "BZ Byzantina"
+  "0"
+  #t
+  )
+
+(define-neume triple-right
+  (list "triple")
+  "BZ Byzantina"
+  ")"
+  #t
+  )
+
+
 (define-neume gorgon
   (list "gorgon" "g")
   "BZ Byzantina"
@@ -194,19 +394,55 @@
   #t
   )
 
-(define-neume ypporoe
-  (list "ypporoe" "yp")
+(define-neume gorgon-below
+  (list "gorgon-below" "g")
   "BZ Byzantina"
-  "'"
-  #f
+  "E"
+  #t
   )
 
-(define-neume ypporoe-gorgon
-  (list "ypporoe-gorgon" "yp-gorgon")
+(define-neume gorgon-below-right
+  (list "gorgon-below-right" "g")
   "BZ Byzantina"
-  ":"
-  #f
+  "R"
+  #t
   )
+
+(define-neume digorgon
+  (list "digorgon")
+  "BZ Palaia"
+  "t"
+  #t
+  )
+
+(define-neume digorgon-right
+  (list "digorgon-right")
+  "BZ Palaia"
+  "T"
+  #t
+  )
+
+(define-neume trigorgon
+  (list "trigorgon")
+  "BZ Palaia"
+  "y"
+  #t
+  )
+
+(define-neume trigorgon-right
+  (list "trigorgon-right")
+  "BZ Palaia"
+  "Y"
+  #t
+  )
+
+(define-neume argon
+  (list "argon")
+  "BZ Byzantina"
+  "w"
+  #t
+  )
+
 
 ; Martyria ---------------------
 
