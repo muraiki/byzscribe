@@ -16,6 +16,8 @@ For instance, it would be a great boon to develop a program that aids in composi
 
 While it is great to have such resources available at all, ideally they would use a free and open, machine readable standard for notation in order to not only greater facilitate the exchange of chant itself but also to allow easier development of a software ecosystem for byzantine chant.
 
+One of the driving forces behind this project is my belief that it is important to develop an open ecosystem of byzantine chant applications. In so doing, I humbly hope to open the beauty of Orthodox Christian hymnography and byzantine chant to ever more people.
+
 ## License
 
 Byzscribe
