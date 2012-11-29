@@ -2,9 +2,13 @@
 
 ![ScreenShot](https://raw.github.com/muraiki/byzscribe/master/byzchant2.png)
 
-Byzscribe is a program for scribing Byzantine chant, written in the [Racket](http://racket-lang.org) language. The intent of this project is to produce a program that can receive purely textual input (as a free and open format) and generate a graphical file with the appropriate neumes. This project is not intended to create a GUI for editing byzantine chant -- that will come after Byzscribe has been developed more, and will tie into this project. And yes, I am aware that there is an error in the orthography in the screenshot. :)
+Byzscribe is a program for scribing Byzantine chant, written in the [Racket](http://racket-lang.org) language. The intent of this project is to produce a program that can receive purely textual input (as a free and open format) and generate a graphical file with the appropriate neumes. This project is not intended to create a GUI for editing byzantine chant -- that will come after Byzscribe has been developed more, and will tie into this project -- although programmer-minded types might prefer this method of scribing chant. And yes, I am aware that there is an error in the orthography in the screenshot. :)
 
-## The state of chant notation
+## How to Install and Use Byzscribe
+
+For information on installing and using Byzscribe, please see the [Byzscribe wiki](https://github.com/muraiki/byzscribe/wiki).
+
+## Why Byzscribe?
 
 There currently exists no free and open format for byzantine chant notation. Because of this, there are a number of byzantine chant programs that are incompatible with each other. This situation has led, at least in the English-speaking world of byzantine chant, to the use of Word and PDF files for exchanging notation. This is not ideal, as it is difficult to parse such files for use in other programs.
 
