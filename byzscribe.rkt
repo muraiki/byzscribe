@@ -92,7 +92,7 @@
   (chant
    ["Lord," (oligon+kentema-side klasma-left)]
    ["have__" (ison ypporoe-gorgon)]
-   ["mer - - - - - - - -" (ison oligon+kentemata-below gorgon elaphron)]
+   ["mer - - - - - - - -" (oligon oligon+kentemata-below gorgon elaphron)]
    ["cy" (apostrophos klasma-right)]
    ["" (martyria-vou)]
   )
