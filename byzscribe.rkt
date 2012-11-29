@@ -19,12 +19,6 @@
 
 ; -------------------------------------
 
-; Font requirements to use this program:
-; Download neume fonts from http://www.dblab.ntua.gr/~stef/mysite/php/index.php?pg=pgbyz&lang=en
-; Download EZ Omega font from http://www.stanthonysmonastery.org/music/ByzMusicFonts.html
-;   EZ Omega is in the EZ Byzantine music fonts package. It is used for rendering English text.
-;   If you want to use a different text font, modify (define TEXT-FONT) below.
-
 (require 2htdp/image)
 (require "neumes.rkt")
 
