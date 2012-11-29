@@ -2,7 +2,7 @@
 
 ![ScreenShot](https://raw.github.com/muraiki/byzscribe/master/byzchant2.png)
 
-Byzscribe is a program for scribing Byzantine chant, written in the [Racket](http://racket-lang.org) language. The intent of this project is to produce a program that can receive purely textual input (as a free and open format) and generate a graphical file with the appropriate neumes. This project is not intended to create a GUI for editing byzantine chant -- that will come after Byzscribe has been developed more, and will tie into this project.
+Byzscribe is a program for scribing Byzantine chant, written in the [Racket](http://racket-lang.org) language. The intent of this project is to produce a program that can receive purely textual input (as a free and open format) and generate a graphical file with the appropriate neumes. This project is not intended to create a GUI for editing byzantine chant -- that will come after Byzscribe has been developed more, and will tie into this project. And yes, I am aware that there is an error in the orthography in the screenshot. :)
 
 ## The state of chant notation
 
@@ -12,6 +12,9 @@ For instance, it would be a great boon to develop a program that aids in composi
 
 While it is great to have such resources available at all, ideally they would use a free and open, machine readable standard for notation in order to not only greater facilitate the exchange of chant itself but also to allow easier development of a software ecosystem for byzantine chant.
 
-## What I'm working on
+## License
 
-I want to get some info into the project wiki, especially in regards to a project roadmap. I will also update the issues section with the features that I'm looking to implement. But most importantly, I'm currently researching licenses to find out what license would work best for this project and any other projects built on top of it. One of the driving forces behind this project is my belief that it is important to develop an open ecosystem of byzantine chant applications. In so doing, I humbly hope to open the beauty of Orthodox Christian hymnography and byzantine chant to ever more people.
+Byzscribe
+Copyright (c) 2012 Erik Ferguson
+
+Byzscribe is distributed under the GNU Lesser General Public License (LGPL). This means that you can link Byzscribe into proprietary applications, provided you follow the rules stated in the LGPL. You can also modify Byzscribe; if you distribute a modified version, you must distribute it under the terms of the LGPL, which in particular means that you must release the source code for the modified software. See LICENSE.txt for more information.
