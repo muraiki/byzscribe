@@ -23,8 +23,10 @@
 (require "neumes.rkt")
 
 (define NEUME-SIZE 28)
-(define FONT-SIZE 18)
+(define TEXT-SIZE 18)
 (define TEXT-FONT "EZ Omega")
+
+(define FILLER (square 0 "solid" "white"))
 
 ; STRUCTS -----------------------
 
@@ -32,43 +34,46 @@
 ; defines a syllable and accompanying notes
 (struct phrase
   (text                   ; string: the word to be displayed
-   notes)                 ; list-of-neumes
+   notes)                 ; a list (neumes) of lists of notes (symbol-groupings)
   #:transparent)
 
 ; MACROS -------------------------
 
-; Macro to make defining lispy chant a bit more readable
 (define-syntax-rule (chant [word (notes ...)] ...)
   (list [phrase word (list notes ...)] ...))
-
-; Without macro (for reference)
-;(define test-chant (list (phrase "Ky" (list ison klasma)) (phrase "ri" (list oligon)) (phrase "e" (list ison apostrophos gorgon-right))))
 
 ; FUNCTION DEFINITIONS ---------------------
 
 ; render : list of phrases -> image
 (define (render chant-list)
-  (cond
-    [(empty? chant-list) (square 1 "solid" "white")] 
-    [else (beside (render-phrase (first chant-list)) (render (rest chant-list)))]))
+  ; beside expects two arguments. add an empty filler in case there's only one phrase.
+  (apply beside (cons FILLER (map render-phrase chant-list))))
 
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
   (above/align "left"
-               (render-neumes (phrase-notes a-phrase))
-               (text/font (phrase-text a-phrase) FONT-SIZE "black" TEXT-FONT 'modern 'normal 'normal #f)))
+               ; beside expects two arguments. add an empty filler in case there's only one composite neume
+               (apply beside (cons FILLER (map render-composite-neume (phrase-notes a-phrase))))
+               (text/font (phrase-text a-phrase) TEXT-SIZE "black" TEXT-FONT 'modern 'normal 'normal #f)))
 
-; render-neumes : list of neumes -> image
-; for now uses same font for whole phrase
-(define (render-neumes notes)
-  (text/font (concat-neumes notes) NEUME-SIZE "black" (neume-font (first notes)) 'modern 'normal 'normal #f))
+; render-composite-neumes : list of composite neumes -> image
+; receives: (list (list oligon+kentema-side klasma-left) (list ison))
+(define (render-composite-neume composite-neumes)
+  ; TODO: modifier neumes not aligned properly, but at least are printing without needing a dummy neume
+  ; overlay expects two arguments. add an empty FILLER in case there's only one neume to composite
+  (apply overlay (cons FILLER (map render-neume composite-neumes))))
+  
+; render-neume : neume -> image
+; renders a single neume
+(define (render-neume a-neume)
+  ; TODO: How to handle modifier neumes? currently render, but are offset
+  (if (neume-modifier? a-neume) (render-modifier-neume a-neume)      
+  (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f)))
 
-; concat-neumes : list-of-neumes -> string
-; concat all the neumes' character-codes together
-(define (concat-neumes notes)
-  (cond
-    [(empty? notes) ""]
-    [else (string-append (neume-character-code (first notes)) (concat-neumes (rest notes)))]))
+; render-modifier-neume : neume -> image
+; Currently doesn't do anything differently from render-neume
+(define (render-modifier-neume a-neume)
+          (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
 
 ; print-all-neumes : hash -> list-of-images
 ; call using default hash with (print-all-neumes neume-names)
@@ -80,40 +85,23 @@
 ; will insert an ison for neumes that modify a preceeding neume (otherwise it will not print)
 ; Because it is a hash, it is unordered output. In the future, it'd be nice to have a better function for this
 ; that has a more ordered output for documentation, but this will suffice for now.
-; TODO: See if I can get the chant macro to work here instead of using (list (phrase etc.
 (define (list-all-neumes neume-hash)
   (for/list ([(key value) neume-hash])
-    (cond
-      [(false? (neume-modifier? value))
-       (render
-        (list (phrase (first (neume-aliases value)) (list value))))]
-      [else
-       (render
-        (list (phrase (first (neume-aliases value)) (list ison value))))])))
+    (render (list (phrase (first (neume-aliases value)) (list (list value)))))))
 
 ; chant-page : list-of-chant -> image
+; Used for rendering multiple lines of chant
+; TODO: convert to using higher order function instead of my manual recursion
 (define (chant-page list-of-chant)
   (cond
     [(empty? list-of-chant) (square 0 "solid" "white")]
     [else
      (above/align "left" (render (first list-of-chant)) (chant-page (rest list-of-chant)))]))
-       
-; DEMONSTRATION OF USE ---------------------
 
-; Use the program in the following way:
+; -------------------------------------
 
-(define test-chant
-  (chant
-   ["Lord," (oligon+kentema-side klasma-left)]
-   ["have__" (ison ypporoe-gorgon)]
-   ["mer - - - - - - - -" (oligon oligon+kentemata-below gorgon elaphron)]
-   ["cy" (apostrophos klasma-right)]
-   ["" (martyria-vou)]
-  )
-)
-
-; Run the following in the interaction window below to render the test chant:
-; (render test-chant)
-
-; Run the following to render multiple lines of chant as one image:
-; (chant-page (list test-chant test-chant test-chant))
+; TEST - note that the chant macro is currently broken for the new format
+; chant should be in the following format:
+; (list (phrase "TEXT" (list (list A-NEUME A-NEUME) (list (ANOTHER-NEUME)))))
+;     neumes per phrase^     ^multiple neumes to composite    ^one neume by itself, to follow the first composite neume
+(render (list (phrase "Lord" (list (list oligon+kentema-side klasma-left) (list ison) (list ypporoe-gorgon) (list oligon) (list oligon+kentemata-below gorgon) (list elaphron) (list apostrophos klasma)))))
