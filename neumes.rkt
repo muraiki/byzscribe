@@ -205,8 +205,8 @@
   NEUME-COLOR
   )
 
-(define-neume apostrophos-petaste
-  (list "apostrophos-petaste" "-1")
+(define-neume apostrophos+petaste
+  (list "apostrophos+petaste" "-1")
   "BZ Byzantina"
   "J"
   #f
@@ -221,8 +221,8 @@
   NEUME-COLOR
   )
 
-(define-neume elaphron-petaste
-  (list "elaphron" "-2f")
+(define-neume elaphron+petaste
+  (list "elaphron+petaste" "-2f")
   "BZ Byzantina"
   "K"
   #f
@@ -237,24 +237,24 @@
   NEUME-COLOR
   )
 
-(define-neume syneches-elaphron-petaste
-  (list "syneches-elaphron-petaste")
+(define-neume syneches-elaphron+petaste
+  (list "syneches-elaphron+petaste")
   "BZ Byzantina"
   "H"
   #f
   NEUME-COLOR
   )
 
-(define-neume elaphron-apostrophos
-  (list "elaphron-apostrophos" "-3")
+(define-neume elaphron+apostrophos
+  (list "elaphron+apostrophos" "-3")
   "BZ Byzantina"
   "l"
   #f
   NEUME-COLOR
   )
 
-(define-neume elaphron-apostrophos-petaste
-  (list "elaphron-apostrophos-petaste" "-3f")
+(define-neume elaphron+apostrophos+etaste
+  (list "elaphron+apostrophos+petaste" "-3f")
   "BZ Byzantina"
   "L"
   #f
@@ -269,56 +269,56 @@
   NEUME-COLOR
   )
 
-(define-neume kamele-petaste
-  (list "kamele" "-4f")
+(define-neume kamele+petaste
+  (list "kamele+petaste" "-4f")
   "BZ Loipa"
   "x"
   #f
   NEUME-COLOR
   )
 
-(define-neume kamele-apostrophos
-  (list "kamele-apostrophos" "-5")
+(define-neume kamele+apostrophos
+  (list "kamele+apostrophos" "-5")
   "BZ Loipa"
   "x"
   #f
   NEUME-COLOR
   )
 
-(define-neume kamele-apostrophos-petaste
-  (list "kamele-apostrophos-petaste" "-5f")
+(define-neume kamele+apostrophos+petaste
+  (list "kamele+apostrophos+petaste" "-5f")
   "BZ Loipa"
   "X"
   #f
   NEUME-COLOR
   )
 
-(define-neume kamele-elaphron
-  (list "kamele-elaphron" "-6")
+(define-neume kamele+elaphron
+  (list "kamele+elaphron" "-6")
   "BZ Loipa"
   "c"
   #f
   NEUME-COLOR
   )
 
-(define-neume kamele-elaphron-petaste
-  (list "kamele-elaphron" "-6f")
+(define-neume kamele+elaphron+petaste
+  (list "kamele+elaphron" "-6f")
   "BZ Loipa"
   "C"
   #f
   NEUME-COLOR
   )
 
-(define-neume kamele-elaphron-apostrophos
-  (list "kamele-elaphron-apostrophos" "-7")
+(define-neume kamele+elaphron+apostrophos
+  (list "kamele+elaphron+apostrophos" "-7")
   "BZ Loipa"
   "v"
   #f
   NEUME-COLOR
   )
 
-(define-neume kamele-elaphron-apostrophos-petaste
-  (list "kamele-elaphron-apostrophos-petaste" "-7")
+(define-neume kamele+elaphron+apostrophos+petaste
+  (list "kamele+elaphron+apostrophos+petaste" "-7")
   "BZ Loipa"
   "V"
   #f
@@ -333,8 +333,8 @@
   NEUME-COLOR
   )
 
-(define-neume kamele-double-petaste
-  (list "kamele-double-petaste" "-8f")
+(define-neume kamele-double+petaste
+  (list "kamele-double+petaste" "-8f")
   "BZ Loipa"
   "B"
   #f
