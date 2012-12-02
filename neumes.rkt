@@ -22,6 +22,10 @@
 
 (provide (except-out (all-defined-out) record-element! define-neume))
 
+(define NEUME-COLOR "black")
+(define TIME-MODIFIER-COLOR "black")
+(define MARTYRIA-COLOR "red")
+
 ; neume
 (struct neume
   (aliases                ; string : for alternative input mechanisms
@@ -63,7 +67,7 @@
   "BZ Byzantina"
   "a"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume ison+petaste
@@ -71,7 +75,7 @@
   "BZ Byzantina"
   "A"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 ; Ascending ------------
@@ -81,7 +85,7 @@
   "BZ Byzantina"
   "s"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon-petaste
@@ -89,7 +93,7 @@
   "BZ Byzantina"
   "S"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+kentema-below
@@ -97,7 +101,7 @@
   "BZ Byzantina"
   "d"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+kentema
@@ -105,7 +109,7 @@
   "BZ Byzantina"
   "f"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume petaste+kentema
@@ -113,7 +117,7 @@
   "BZ Byzantina"
   "F"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+kentemata-below
@@ -121,7 +125,7 @@
   "BZ Byzantina"
   "c"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+ypsele-right
@@ -129,7 +133,7 @@
   "BZ Byzantina"
   "g"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+ypsele-left
@@ -137,7 +141,7 @@
   "BZ Loipa"
   "A"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+kentema+ypsele-right
@@ -145,7 +149,7 @@
   "BZ Loipa"
   "a"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+kentema+ypsele-center
@@ -153,7 +157,7 @@
   "BZ Loipa"
   "f"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+ypsele-double
@@ -161,7 +165,7 @@
   "BZ Loipa"
   "g"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+kentemata+ypsele-double
@@ -169,7 +173,7 @@
   "BZ Loipa"
   "h"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kentemata
@@ -177,7 +181,7 @@
   "BZ Byzantina"
   "x"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume petaste
@@ -185,7 +189,7 @@
   "BZ Byzantina"
   "S"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume oligon+kentema-side
@@ -193,7 +197,7 @@
   "BZ Byzantina"
   "sC"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 ; Descending ---------------------
@@ -203,7 +207,7 @@
   "BZ Byzantina"
   "j"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume apostrophos-petaste
@@ -211,7 +215,7 @@
   "BZ Byzantina"
   "J"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume elaphron
@@ -219,7 +223,7 @@
   "BZ Byzantina"
   "k"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume elaphron-petaste
@@ -227,7 +231,7 @@
   "BZ Byzantina"
   "K"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume syneches-elaphron
@@ -235,7 +239,7 @@
   "BZ Byzantina"
   "h"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume syneches-elaphron-petaste
@@ -243,7 +247,7 @@
   "BZ Byzantina"
   "H"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume elaphron-apostrophos
@@ -251,7 +255,7 @@
   "BZ Byzantina"
   "l"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume elaphron-apostrophos-petaste
@@ -259,7 +263,7 @@
   "BZ Byzantina"
   "L"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele
@@ -267,7 +271,7 @@
   "BZ Byzantina"
   ";"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-petaste
@@ -275,7 +279,7 @@
   "BZ Loipa"
   "x"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-apostrophos
@@ -283,7 +287,7 @@
   "BZ Loipa"
   "x"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-apostrophos-petaste
@@ -291,7 +295,7 @@
   "BZ Loipa"
   "X"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-elaphron
@@ -299,7 +303,7 @@
   "BZ Loipa"
   "c"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-elaphron-petaste
@@ -307,7 +311,7 @@
   "BZ Loipa"
   "C"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-elaphron-apostrophos
@@ -315,7 +319,7 @@
   "BZ Loipa"
   "v"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-elaphron-apostrophos-petaste
@@ -323,7 +327,7 @@
   "BZ Loipa"
   "V"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-double
@@ -331,7 +335,7 @@
   "BZ Loipa"
   "b"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume kamele-double-petaste
@@ -339,7 +343,7 @@
   "BZ Loipa"
   "B"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume ypporoe
@@ -347,7 +351,7 @@
   "BZ Byzantina"
   "'"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume ypporoe-gorgon
@@ -355,7 +359,7 @@
   "BZ Byzantina"
   ":"
   #f
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume ypporoe-petaste
@@ -363,7 +367,7 @@
   "BZ Byzantina"
   "\""
   #f
-  "black"
+  NEUME-COLOR
   )
 
 ; Time --------------------
@@ -373,7 +377,7 @@
   "BZ Byzantina"
   "u"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume klasma-right
@@ -381,7 +385,7 @@
   "BZ Byzantina"
   "i"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume klasma-left
@@ -389,7 +393,7 @@
   "BZ Byzantina"
   "U"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume klasma-below
@@ -397,7 +401,7 @@
   "BZ Byzantina"
   "I"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume klasma-below-right
@@ -405,7 +409,7 @@
   "BZ Loipa"
   "z"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume aple
@@ -413,7 +417,7 @@
   "BZ Byzantina"
   "8"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume aple-right
@@ -421,7 +425,7 @@
   "BZ Byzantina"
   "*"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume diple
@@ -429,7 +433,7 @@
   "BZ Byzantina"
   "9"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume diple-right
@@ -437,7 +441,7 @@
   "BZ Byzantina"
   "("
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume triple
@@ -445,7 +449,7 @@
   "BZ Byzantina"
   "0"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 (define-neume triple-right
@@ -453,7 +457,7 @@
   "BZ Byzantina"
   ")"
   #t
-  "black"
+  NEUME-COLOR
   )
 
 
@@ -462,7 +466,7 @@
   "BZ Byzantina"
   "e"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume gorgon-right
@@ -470,7 +474,7 @@
   "BZ Byzantina"
   "r"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume gorgon-below
@@ -478,7 +482,7 @@
   "BZ Byzantina"
   "E"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume gorgon-below-right
@@ -486,7 +490,7 @@
   "BZ Byzantina"
   "R"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume digorgon
@@ -494,7 +498,7 @@
   "BZ Palaia"
   "t"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume digorgon-right
@@ -502,7 +506,7 @@
   "BZ Palaia"
   "T"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume trigorgon
@@ -510,7 +514,7 @@
   "BZ Palaia"
   "y"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume trigorgon-right
@@ -518,7 +522,7 @@
   "BZ Palaia"
   "Y"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 (define-neume argon
@@ -526,7 +530,7 @@
   "BZ Byzantina"
   "w"
   #t
-  "red"
+  TIME-MODIFIER-COLOR
   )
 
 
@@ -537,5 +541,5 @@
   "BZ Byzantina"
   "7&"
   #f
-  "red"
+  MARTYRIA-COLOR
   )

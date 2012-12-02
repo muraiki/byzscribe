@@ -26,6 +26,9 @@
 (define TEXT-SIZE 18)
 (define TEXT-FONT "EZ Omega")
 
+; FILLER is used in a number of places to prepend a blank image to functions that return an image.
+; This is necessary because functions such as "beside" are used, and they expect to receive at least 2 arguments
+; FILLER guarantees that there are at least two arguments. There's probably a better way to do this. :)
 (define FILLER (square 0 "solid" "white"))
 
 ; STRUCTS -----------------------
@@ -46,34 +49,18 @@
 
 ; render : list of phrases -> image
 (define (render chant-list)
-  ; beside expects two arguments. add an empty filler in case there's only one phrase.
   (apply beside (cons FILLER (map render-phrase chant-list))))
 
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
   (above/align "left"
-               ; beside expects two arguments. add an empty filler in case there's only one composite neume
-               (apply beside (cons FILLER (map render-composite-neume (phrase-notes a-phrase))))
+               (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))
                (text/font (phrase-text a-phrase) TEXT-SIZE "black" TEXT-FONT 'modern 'normal 'normal #f)))
-
-; render-composite-neumes : list of composite neumes -> image
-; receives: (list (list oligon+kentema-side klasma-left) (list ison))
-(define (render-composite-neume composite-neumes)
-  ; TODO: modifier neumes not aligned properly, but at least are printing without needing a dummy neume
-  ; overlay expects two arguments. add an empty FILLER in case there's only one neume to composite
-  (apply overlay (cons FILLER (map render-neume composite-neumes))))
   
 ; render-neume : neume -> image
 ; renders a single neume
 (define (render-neume a-neume)
-  ; TODO: How to handle modifier neumes? currently render, but are offset
-  (if (neume-modifier? a-neume) (render-modifier-neume a-neume)      
-  (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f)))
-
-; render-modifier-neume : neume -> image
-; Currently doesn't do anything differently from render-neume
-(define (render-modifier-neume a-neume)
-          (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
+  (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
 
 ; print-all-neumes : hash -> list-of-images
 ; call using default hash with (print-all-neumes neume-names)
@@ -87,21 +74,29 @@
 ; that has a more ordered output for documentation, but this will suffice for now.
 (define (list-all-neumes neume-hash)
   (for/list ([(key value) neume-hash])
-    (render (list (phrase (first (neume-aliases value)) (list (list value)))))))
+    (if (neume-modifier? value)
+        (render (list (phrase (first (neume-aliases value)) (list ison value))))
+        (render (list (phrase (first (neume-aliases value)) (list value)))))))
 
 ; chant-page : list-of-chant -> image
 ; Used for rendering multiple lines of chant
-; TODO: convert to using higher order function instead of my manual recursion
 (define (chant-page list-of-chant)
-  (cond
-    [(empty? list-of-chant) (square 0 "solid" "white")]
-    [else
-     (above/align "left" (render (first list-of-chant)) (chant-page (rest list-of-chant)))]))
+  (apply above/align "left" (cons FILLER (map render list-of-chant))))
 
-; -------------------------------------
+; --- HOW TO USE USE -------------------------------------
 
-; TEST - note that the chant macro is currently broken for the new format
-; chant should be in the following format:
-; (list (phrase "TEXT" (list (list A-NEUME A-NEUME) (list (ANOTHER-NEUME)))))
-;     neumes per phrase^     ^multiple neumes to composite    ^one neume by itself, to follow the first composite neume
-(render (list (phrase "Lord" (list (list oligon+kentema-side klasma-left) (list ison) (list ypporoe-gorgon) (list oligon) (list oligon+kentemata-below gorgon) (list elaphron) (list apostrophos klasma)))))
+(define test-chant
+  (chant
+   ["Lord," (oligon+kentema-side klasma-left)]
+   ["have__" (ison ypporoe-gorgon)]
+   ["mer - - - - - - - -" (oligon oligon+kentemata-below gorgon elaphron)]
+   ["cy" (apostrophos klasma-right)]
+   ["" (martyria-vou)]
+  )
+)
+
+; Run the following to render one line of chant:
+; (render test-chant)
+
+; Run the following to render multiple lines of chant as one image:
+; (chant-page (list test-chant test-chant test-chant))
