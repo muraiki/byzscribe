@@ -52,11 +52,20 @@
   (apply beside (cons FILLER (map render-phrase chant-list))))
 
 ; render-phrase : phrase -> image
-(define (render-phrase a-phrase)
-  (above/align "left"
+(define (render-phrase a-phrase)  
+  (above/align (left-or-center (phrase-notes a-phrase))
                (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))
                (text/font (phrase-text a-phrase) TEXT-SIZE "black" TEXT-FONT 'modern 'normal 'normal #f)))
-  
+
+; left-or-center : phrase-notes -> string
+(define (left-or-center some-phrase-notes)
+  (if (> (number-nonmodifier-neumes some-phrase-notes) 2) "left"
+      "center"))
+
+; number-nonmodifier-neumes : phrase-notes -> integer
+(define (number-nonmodifier-neumes some-phrase-notes)
+  (- (length some-phrase-notes) (length (filter neume-modifier? some-phrase-notes))))
+
 ; render-neume : neume -> image
 ; renders a single neume
 (define (render-neume a-neume)
