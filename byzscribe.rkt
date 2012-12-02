@@ -32,6 +32,8 @@
 ; FILLER guarantees that there are at least two arguments. There's probably a better way to do this. :)
 (define FILLER (square 0 "solid" "white"))
 
+(define HYPHEN (text/font " -" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+
 ; STRUCTS -----------------------
 
 ; phrase
@@ -53,12 +55,29 @@
   (apply beside (cons FILLER (map render-phrase chant-list))))
 
 ; render-phrase : phrase -> image
-(define (render-phrase a-phrase)  
-  (above/align (left-or-center (phrase-notes a-phrase))
-               (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))
-               (text/font (phrase-text a-phrase) TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f)))
+(define (render-phrase a-phrase)
+  (let ([notes (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))])
+  ;(above/align (left-or-center (phrase-notes a-phrase)) <-- See notes for left-or-center below
+  (above/align "center"
+               notes
+               (render-text (phrase-text a-phrase) (image-width notes)))))
+
+; render-text : string integer -> image
+(define (render-text a-phrase neumes-width)
+  (let ([text (text/font a-phrase TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f)])
+  (if (> neumes-width (+ (image-width (render-neume ison)) (image-width text)))
+      (hyphenate text neumes-width)
+      text)))
+
+; hyphenate : image integer -> image
+; receives rendered text and an int that is the image width of the neumes above it
+(define (hyphenate text-image neumes-width)
+  (if (>= (+ (image-width HYPHEN) (image-width text-image)) neumes-width) text-image
+    (hyphenate (beside text-image HYPHEN) neumes-width)))
 
 ; left-or-center : phrase-notes -> string
+; Possibly not needed anymore now that auto-hyphenation is in.
+; Now, things seem to look best when always centered.
 (define (left-or-center some-phrase-notes)
   (if (> (number-nonmodifier-neumes some-phrase-notes) 2) "left"
       "center"))
@@ -98,8 +117,8 @@
 (define test-chant
   (chant
    ["Lord," (oligon+kentema-side klasma-left)]
-   ["have__" (ison ypporoe+gorgon)]
-   ["mer - - - - - - - -" (oligon oligon+kentemata-below gorgon elaphron)]
+   ["have" (ison ypporoe+gorgon)]
+   ["mer" (oligon oligon+kentemata-below gorgon elaphron)]
    ["cy" (apostrophos klasma-right)]
    ["" (martyria-ni)]
   )
