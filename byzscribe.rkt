@@ -83,7 +83,7 @@
 (define (chant-page list-of-chant)
   (apply above/align "left" (cons FILLER (map render list-of-chant))))
 
-; --- HOW TO USE USE -------------------------------------
+; --- HOW TO USE -------------------------------------
 
 (define test-chant
   (chant
