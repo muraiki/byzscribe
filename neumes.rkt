@@ -28,7 +28,7 @@
 
 ; neume
 (struct neume
-  (aliases                ; string : for alternative input mechanisms
+  (aliases                ; Don't use this for now, as it's probably going away. However, you will at least need to put the neume's name here.
    font                   ; string : the various neumes are scattered across a few fonts
    character-code         ; string : The roman character code for the desired neume; such as "0" for ison
    modifier?              ; boolean : Whether or not it modifies another note (such as klasma)
@@ -54,11 +54,6 @@
   (begin
     (define name (neume aliases font character-code modifier? color))
     (record-element! 'name name)))
-
-; NEUME DEFINITIONS ---------------
-; Download neume fonts from http://www.dblab.ntua.gr/~stef/mysite/php/index.php?pg=pgbyz&lang=en
-; Download EZ Omega font from http://www.stanthonysmonastery.org/music/ByzMusicFonts.html
-;   use the EZ Byzantine music fonts package. EZ Omega is used for rendering English text.
 
 ; Neutral --------------
 
@@ -88,10 +83,10 @@
   NEUME-COLOR
   )
 
-(define-neume oligon-petaste
-  (list "oligon-petaste" "+2")
+(define-neume oligon+petaste
+  (list "oligon+petaste")
   "BZ Byzantina"
-  "S"
+  "D"
   #f
   NEUME-COLOR
   )
@@ -354,16 +349,16 @@
   NEUME-COLOR
   )
 
-(define-neume ypporoe-gorgon
-  (list "ypporoe-gorgon" "yp-gorgon")
+(define-neume ypporoe+gorgon
+  (list "ypporoe+gorgon" "yp-gorgon")
   "BZ Byzantina"
   ":"
   #f
   NEUME-COLOR
   )
 
-(define-neume ypporoe-petaste
-  (list "ypporoe-petaste" "yp-f")
+(define-neume ypporoe+petaste
+  (list "ypporoe+petaste" "yp-f")
   "BZ Byzantina"
   "\""
   #f
@@ -536,8 +531,8 @@
 
 ; Martyria ---------------------
 
-(define-neume martyria-vou
-  (list "martyria-vou" "mv")
+(define-neume martyria-ni
+  (list "martyria-ni")
   "BZ Byzantina"
   "7&"
   #f

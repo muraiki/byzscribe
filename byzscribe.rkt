@@ -88,10 +88,10 @@
 (define test-chant
   (chant
    ["Lord," (oligon+kentema-side klasma-left)]
-   ["have__" (ison ypporoe-gorgon)]
+   ["have__" (ison ypporoe+gorgon)]
    ["mer - - - - - - - -" (oligon oligon+kentemata-below gorgon elaphron)]
    ["cy" (apostrophos klasma-right)]
-   ["" (martyria-vou)]
+   ["" (martyria-ni)]
   )
 )
 
