@@ -37,7 +37,7 @@
 ; defines a syllable and accompanying notes
 (struct phrase
   (text                   ; string: the word to be displayed
-   notes)                 ; a list (neumes) of lists of notes (symbol-groupings)
+   notes)                 ; a list of neumes
   #:transparent)
 
 ; MACROS -------------------------
@@ -105,7 +105,7 @@
 )
 
 ; Run the following to render one line of chant:
-; (render test-chant)
+(render test-chant)
 
 ; Run the following to render multiple lines of chant as one image:
 ; (chant-page (list test-chant test-chant test-chant))
