@@ -23,8 +23,9 @@
 (require "neumes.rkt")
 
 (define NEUME-SIZE 28)
-(define TEXT-SIZE 18)
 (define TEXT-FONT "EZ Omega")
+(define TEXT-SIZE 18)
+(define TEXT-COLOR "black")
 
 ; FILLER is used in a number of places to prepend a blank image to functions that return an image.
 ; This is necessary because functions such as "beside" are used, and they expect to receive at least 2 arguments
@@ -55,7 +56,7 @@
 (define (render-phrase a-phrase)  
   (above/align (left-or-center (phrase-notes a-phrase))
                (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))
-               (text/font (phrase-text a-phrase) TEXT-SIZE "black" TEXT-FONT 'modern 'normal 'normal #f)))
+               (text/font (phrase-text a-phrase) TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f)))
 
 ; left-or-center : phrase-notes -> string
 (define (left-or-center some-phrase-notes)
@@ -105,7 +106,7 @@
 )
 
 ; Run the following to render one line of chant:
-(render test-chant)
+; (render test-chant)
 
 ; Run the following to render multiple lines of chant as one image:
 ; (chant-page (list test-chant test-chant test-chant))
