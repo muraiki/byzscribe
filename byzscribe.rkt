@@ -134,9 +134,10 @@
 )
 
 ; Run the following to render one line of chant:
- (render test-chant)
+; (render test-chant)
 
 ; Run the following to render multiple lines of chant as one image:
 ; (chant-page (list test-chant test-chant test-chant))
 
-(render (chant ["hear" (kamele+petaste klasma-below-right apostrophos kentemata)]))
+; Illustrates underscores
+; (render (chant ["hear" (kamele+petaste klasma-below-right apostrophos kentemata)]))
