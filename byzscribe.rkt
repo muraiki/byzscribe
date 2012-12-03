@@ -32,7 +32,7 @@
 ; FILLER guarantees that there are at least two arguments. There's probably a better way to do this. :)
 (define FILLER (square 0 "solid" "white"))
 
-(define HYPHEN (text/font " -" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
 
 ; STRUCTS -----------------------
 
@@ -57,7 +57,7 @@
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
   (let ([notes (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))])
-  ;(above/align (left-or-center (phrase-notes a-phrase)) <-- See notes for left-or-center below
+  ;(above/align (left-or-center (phrase-notes a-phrase)) ; <-- See notes for left-or-center below
   (above/align "center"
                notes
                (render-text (phrase-text a-phrase) (image-width notes)))))

@@ -270,15 +270,15 @@
   )
 
 (define-neume kamele+petaste
-  (list "kamele+petaste" "-4f")
+  (list "kamele+petaste")
   "BZ Loipa"
-  "x"
+  "Z"
   #f
   NEUME-COLOR
   )
 
 (define-neume kamele+apostrophos
-  (list "kamele+apostrophos" "-5")
+  (list "kamele+apostrophos")
   "BZ Loipa"
   "x"
   #f
