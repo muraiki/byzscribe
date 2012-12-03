@@ -19,6 +19,15 @@
 
 ; -------------------------------------
 
+(provide chant
+         phrase
+         print-all-neumes
+         list-all-neumes
+         render-neume
+         render
+         chant-page
+         (all-from-out "neumes.rkt"))
+
 (require 2htdp/image)
 (require "neumes.rkt")
 
@@ -120,24 +129,3 @@
 ; Used for rendering multiple lines of chant
 (define (chant-page list-of-chant)
   (apply above/align "left" (cons FILLER (map render list-of-chant))))
-
-; --- HOW TO USE -------------------------------------
-
-(define test-chant
-  (chant
-   ["Lord," (oligon+kentema-side klasma-left)]
-   ["have" (ison ypporoe+gorgon)]
-   ["mer" (oligon oligon+kentemata-below gorgon elaphron)]
-   ["cy" (apostrophos klasma-right)]
-   ["" (martyria-ni)]
-  )
-)
-
-; Run the following to render one line of chant:
-; (render test-chant)
-
-; Run the following to render multiple lines of chant as one image:
-; (chant-page (list test-chant test-chant test-chant))
-
-; Illustrates underscores
-; (render (chant ["hear" (kamele+petaste klasma-below-right apostrophos kentemata)]))
