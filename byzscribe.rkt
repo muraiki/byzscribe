@@ -41,6 +41,10 @@
 ; FILLER guarantees that there are at least two arguments. There's probably a better way to do this. :)
 (define FILLER (square 0 "solid" "white"))
 
+; Defines for the hyphenator
+(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+(define UNDERSCORE (text/font "_" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+
 ; STRUCTS -----------------------
 
 ; phrase
@@ -71,13 +75,10 @@
 
 ; render-text : string integer -> image
 (define (render-text a-phrase neumes-width)
-  (let ([text (text/font a-phrase TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f)])
-  (cond
-    [(> neumes-width (+ (* HYPHEN-MULTIPLIER THRESHHOLD) (image-width text)))
-       (hyphenate text neumes-width HYPHEN)]
-    [(> neumes-width (+ THRESHHOLD (image-width text)))
-     (hyphenate text neumes-width UNDERSCORE)]
-    [else text])))
+  (match a-phrase
+    [(regexp #rx"--$") (hyphenate (text/font (substring a-phrase 0 (- (string-length a-phrase) 2)) TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f) neumes-width HYPHEN)]
+    [(regexp #rx"__$") (hyphenate (text/font (substring a-phrase 0 (- (string-length a-phrase) 2)) TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f) neumes-width UNDERSCORE)]
+    [else (text/font a-phrase TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f)]))
 
 ; hyphenate : image integer -> image
 ; receives rendered text and an int that is the image width of the neumes above it
@@ -100,14 +101,6 @@
 ; renders a single neume
 (define (render-neume a-neume)
   (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
-
-; Defines for the hyphenator
-; THRESHHOLD is the symbol that determines whether a word should be hyphenated.
-; If the length of the neumes exceeds hyphen-multiplier threshholds, then hyphens are used. One threshhold, underscores are used.
-(define THRESHHOLD (image-width (render-neume elaphron)))
-(define HYPHEN-MULTIPLIER 2)
-(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
-(define UNDERSCORE (text/font "_" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
 
 ; print-all-neumes : hash -> list-of-images
 ; call using default hash with (print-all-neumes neume-names)
