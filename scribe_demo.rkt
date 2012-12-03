@@ -17,4 +17,4 @@
 ; (render test-chant)
 
 ; Run the following to render multiple lines of chant as one image:
-(chant-page (list test-chant test-chant2))
+; (chant-page (list test-chant test-chant2))
