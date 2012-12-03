@@ -32,8 +32,6 @@
 ; FILLER guarantees that there are at least two arguments. There's probably a better way to do this. :)
 (define FILLER (square 0 "solid" "white"))
 
-(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
-
 ; STRUCTS -----------------------
 
 ; phrase
@@ -65,15 +63,18 @@
 ; render-text : string integer -> image
 (define (render-text a-phrase neumes-width)
   (let ([text (text/font a-phrase TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f)])
-  (if (> neumes-width (+ (image-width (render-neume ison)) (image-width text)))
-      (hyphenate text neumes-width)
-      text)))
+  (cond
+    [(> neumes-width (+ (* HYPHEN-MULTIPLIER THRESHHOLD) (image-width text)))
+       (hyphenate text neumes-width HYPHEN)]
+    [(> neumes-width (+ THRESHHOLD (image-width text)))
+     (hyphenate text neumes-width UNDERSCORE)]
+    [else text])))
 
 ; hyphenate : image integer -> image
 ; receives rendered text and an int that is the image width of the neumes above it
-(define (hyphenate text-image neumes-width)
-  (if (>= (+ (image-width HYPHEN) (image-width text-image)) neumes-width) text-image
-    (hyphenate (beside text-image HYPHEN) neumes-width)))
+(define (hyphenate text-image neumes-width hyphenate-symbol)
+  (if (>= (+ (image-width hyphenate-symbol) (image-width text-image)) neumes-width) text-image
+    (hyphenate (beside text-image hyphenate-symbol) neumes-width hyphenate-symbol)))
 
 ; left-or-center : phrase-notes -> string
 ; Possibly not needed anymore now that auto-hyphenation is in.
@@ -90,6 +91,14 @@
 ; renders a single neume
 (define (render-neume a-neume)
   (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
+
+; Defines for the hyphenator
+; THRESHHOLD is the symbol that determines whether a word should be hyphenated.
+; If the length of the neumes exceeds hyphen-multiplier threshholds, then hyphens are used. One threshhold, underscores are used.
+(define THRESHHOLD (image-width (render-neume elaphron)))
+(define HYPHEN-MULTIPLIER 2)
+(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+(define UNDERSCORE (text/font "_" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
 
 ; print-all-neumes : hash -> list-of-images
 ; call using default hash with (print-all-neumes neume-names)
@@ -125,7 +134,9 @@
 )
 
 ; Run the following to render one line of chant:
-; (render test-chant)
+ (render test-chant)
 
 ; Run the following to render multiple lines of chant as one image:
 ; (chant-page (list test-chant test-chant test-chant))
+
+(render (chant ["hear" (kamele+petaste klasma-below-right apostrophos kentemata)]))
