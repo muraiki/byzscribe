@@ -38,7 +38,7 @@
 
 ; FILLER is used in a number of places to prepend a blank image to functions that return an image.
 ; This is necessary because functions such as "beside" are used, and they expect to receive at least 2 arguments
-; FILLER guarantees that there are at least two arguments. There's probably a better way to do this. :)
+; There's probably a better way to do this, but for now this avoids a bunch of ifs and/or additional function declarations. :)
 (define FILLER (square 0 "solid" "white"))
 
 ; Defines for the hyphenator
@@ -52,7 +52,7 @@
 (struct phrase
   (text                   ; string: the word to be displayed
    notes)                 ; a list of neumes
-  #:transparent)
+  #:transparent)          ; lets us see into the struct, helpful for debugging
 
 ; MACROS -------------------------
 
@@ -73,15 +73,21 @@
                (render-hyphenate-text (phrase-text a-phrase) (image-width notes)))))
 
 ; render-hyphenate-text : string integer -> image
-(define (render-hyphenate-text a-phrase neumes-width)
-  (match a-phrase
+(define (render-hyphenate-text a-text neumes-width)
+  (match a-text
     [(regexp #rx"--$") (hyphenate
-                        (render-text (substring a-phrase 0 (- (string-length a-phrase) 2)))
+                        (render-text (remove-last-two a-text))
                          neumes-width HYPHEN)]
     [(regexp #rx"__$") (hyphenate
-                        (render-text (substring a-phrase 0 (- (string-length a-phrase) 2)))
+                        (render-text (remove-last-two a-text))
                          neumes-width UNDERSCORE)]
-    [else (render-text a-phrase)]))
+    [else (render-text a-text)]))
+
+; remove-last-two : string -> string
+; Strips off the last two characters of a string. Used for cleaning up hyphenated text before rendering
+; Example: "text__" -> "text"
+(define (remove-last-two a-text)
+  (substring a-text 0 (- (string-length a-text) 2)))
 
 ; hyphenate : image integer -> image
 ; receives rendered text and an int that is the image width of the neumes above it
