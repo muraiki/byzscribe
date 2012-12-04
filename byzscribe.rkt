@@ -68,17 +68,20 @@
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
   (let ([notes (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))])
-  ;(above/align (left-or-center (phrase-notes a-phrase)) ; <-- See notes for left-or-center below
   (above/align "center"
                notes
-               (render-text (phrase-text a-phrase) (image-width notes)))))
+               (render-hyphenate-text (phrase-text a-phrase) (image-width notes)))))
 
-; render-text : string integer -> image
-(define (render-text a-phrase neumes-width)
+; render-hyphenate-text : string integer -> image
+(define (render-hyphenate-text a-phrase neumes-width)
   (match a-phrase
-    [(regexp #rx"--$") (hyphenate (text/font (substring a-phrase 0 (- (string-length a-phrase) 2)) TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f) neumes-width HYPHEN)]
-    [(regexp #rx"__$") (hyphenate (text/font (substring a-phrase 0 (- (string-length a-phrase) 2)) TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f) neumes-width UNDERSCORE)]
-    [else (text/font a-phrase TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f)]))
+    [(regexp #rx"--$") (hyphenate
+                        (render-text (substring a-phrase 0 (- (string-length a-phrase) 2)))
+                         neumes-width HYPHEN)]
+    [(regexp #rx"__$") (hyphenate
+                        (render-text (substring a-phrase 0 (- (string-length a-phrase) 2)))
+                         neumes-width UNDERSCORE)]
+    [else (render-text a-phrase)]))
 
 ; hyphenate : image integer -> image
 ; receives rendered text and an int that is the image width of the neumes above it
@@ -86,21 +89,14 @@
   (if (>= (+ (image-width hyphenate-symbol) (image-width text-image)) neumes-width) text-image
     (hyphenate (beside text-image hyphenate-symbol) neumes-width hyphenate-symbol)))
 
-; left-or-center : phrase-notes -> string
-; Possibly not needed anymore now that auto-hyphenation is in.
-; Now, things seem to look best when always centered.
-(define (left-or-center some-phrase-notes)
-  (if (> (number-nonmodifier-neumes some-phrase-notes) 2) "left"
-      "center"))
-
-; number-nonmodifier-neumes : phrase-notes -> integer
-(define (number-nonmodifier-neumes some-phrase-notes)
-  (- (length some-phrase-notes) (length (filter neume-modifier? some-phrase-notes))))
-
 ; render-neume : neume -> image
 ; renders a single neume
 (define (render-neume a-neume)
   (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
+
+; render-text : string -> image
+(define (render-text a-text)
+  (text/font a-text TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
 
 ; print-all-neumes : hash -> list-of-images
 ; call using default hash with (print-all-neumes neume-names)
