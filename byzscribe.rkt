@@ -36,11 +36,6 @@
 (define TEXT-SIZE 18)
 (define TEXT-COLOR "black")
 
-; FILLER is used in a number of places to prepend a blank image to functions that return an image.
-; This is necessary because functions such as "beside" are used, and they expect to receive at least 2 arguments
-; There's probably a better way to do this, but for now this avoids a bunch of ifs and/or additional function declarations. :)
-(define FILLER (square 0 "solid" "white"))
-
 ; Defines for the hyphenator
 (define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
 (define UNDERSCORE (text/font "_" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
@@ -61,13 +56,22 @@
 
 ; FUNCTION DEFINITIONS ---------------------
 
+; image-apply-maybe : image-composition-function list-of-images -> image
+; Applys an image composition function that expects two arguments to a list. If there is only one element in the list,
+; simply returns that element (but not as a list).
+; Used when functions like beside and above, which expect two arguments, might only receive one argument.
+; Example: when a user wants to render a phrase with only a single note, beside will not work.
+(define (image-apply-maybe a-function a-list)
+  (if (= (length a-list) 1) (first a-list)
+      (apply a-function a-list)))
+
 ; render : list of phrases -> image
 (define (render chant-list)
-  (apply beside (cons FILLER (map render-phrase chant-list))))
+  (image-apply-maybe beside (map render-phrase chant-list)))
 
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
-  (let ([notes (apply beside (cons FILLER (map render-neume (phrase-notes a-phrase))))])
+  (let ([notes (image-apply-maybe beside (map render-neume (phrase-notes a-phrase)))])
   (above/align "center"
                notes
                (render-hyphenate-text (phrase-text a-phrase) (image-width notes)))))
@@ -123,4 +127,5 @@
 ; chant-page : list-of-chant -> image
 ; Used for rendering multiple lines of chant
 (define (chant-page list-of-chant)
-  (apply above/align "left" (cons FILLER (map render list-of-chant))))
+  (image-apply-maybe ((curry above/align) "left") (map render list-of-chant)))
+
