@@ -37,8 +37,10 @@
 (define TEXT-COLOR "black")
 
 ; Defines for the hyphenator
-(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
-(define UNDERSCORE (text/font "_" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+;(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+;(define UNDERSCORE (text/font "_" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+(define HYPHEN "  - ")
+(define UNDERSCORE "_")
 
 ; STRUCTS -----------------------
 
@@ -79,12 +81,8 @@
 ; render-hyphenate-text : string integer -> image
 (define (render-hyphenate-text a-text neumes-width)
   (match a-text
-    [(regexp #rx"--$") (hyphenate
-                        (render-text (remove-last-two a-text))
-                         neumes-width HYPHEN)]
-    [(regexp #rx"__$") (hyphenate
-                        (render-text (remove-last-two a-text))
-                         neumes-width UNDERSCORE)]
+    [(regexp #rx"--$") (hyphenate a-text neumes-width HYPHEN)]
+    [(regexp #rx"__$") (hyphenate a-text neumes-width UNDERSCORE)]
     [else (render-text a-text)]))
 
 ; remove-last-two : string -> string
@@ -93,11 +91,19 @@
 (define (remove-last-two a-text)
   (substring a-text 0 (- (string-length a-text) 2)))
 
-; hyphenate : image integer -> image
-; receives rendered text and an int that is the image width of the neumes above it
-(define (hyphenate text-image neumes-width hyphenate-symbol)
-  (if (>= (+ (image-width hyphenate-symbol) (image-width text-image)) neumes-width) text-image
-    (hyphenate (beside text-image hyphenate-symbol) neumes-width hyphenate-symbol)))
+; hyphenate : string integer string -> image
+; receives text, an int that is the image width of the neumes above it, and the string to hyphenate with
+(define (hyphenate a-text neumes-width hyphenate-string)
+  (let* ([text-image (render-text (remove-last-two a-text))]
+         [num-hyp-strings (sub1 (floor (/ (- neumes-width (image-width text-image))
+                                          (image-width (render-text hyphenate-string)))))])
+  (beside text-image
+          (render-text (repeat-string hyphenate-string num-hyp-strings)))))
+
+; repeat-string : string integer -> string
+(define (repeat-string a-string an-integer)
+  (if (= 1 an-integer) a-string
+      (string-append a-string (repeat-string a-string (sub1 an-integer)))))
 
 ; render-neume : neume -> image
 ; renders a single neume
