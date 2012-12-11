@@ -4,14 +4,14 @@
 (define test-chant
   (chant
    ["Lord," (oligon+kentema-side klasma-left)]
-   ["have__" (ison ypporoe+gorgon)]
-   ["mer--" (oligon oligon+kentemata-below gorgon elaphron)]
+   ["have" _ (ison ypporoe+gorgon)]
+   ["mer" - (oligon oligon+kentemata-below gorgon elaphron)]
    ["cy" (apostrophos klasma-right)]
    ["" (martyria-ni)]
   )
 )
 
-(define test-chant2 (chant ["hear__" (kamele+petaste klasma-below-right apostrophos kentemata)]))
+(define test-chant2 (chant ["hear" _ (kamele+petaste klasma-below-right apostrophos kentemata)]))
 
 ; Run the following to render one line of chant:
 ; (render test-chant)

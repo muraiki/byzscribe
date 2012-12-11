@@ -19,10 +19,12 @@
 
 ; -------------------------------------
 
-(provide chant
+(provide chant-grouping
+         chant
          phrase
          print-all-neumes
          list-all-neumes
+         render-phrase
          render-neume
          render
          chant-page
@@ -37,8 +39,6 @@
 (define TEXT-COLOR "black")
 
 ; Defines for the hyphenator
-;(define HYPHEN (text/font "  - " TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
-;(define UNDERSCORE (text/font "_" TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
 (define HYPHEN "  - ")
 (define UNDERSCORE "_")
 
@@ -48,13 +48,26 @@
 ; defines a syllable and accompanying notes
 (struct phrase
   (text                   ; string: the word to be displayed
-   notes)                 ; a list of neumes
+   notes                  ; a list of neumes
+   hyphen)                ; a hyphen symbol, if specified
   #:transparent)          ; lets us see into the struct, helpful for debugging
 
 ; MACROS -------------------------
 
-(define-syntax-rule (chant [word (notes ...)] ...)
-  (list [phrase word (list notes ...)] ...))
+; chant-grouping : syntax to create a grouping of a word and associated neumes (a phrase).
+; hyphen is set to false by default.
+(define-syntax chant-grouping
+  (syntax-rules (- _)
+    [(chant-grouping [word (notes ...)])
+     (phrase word (list notes ...) false)]
+    [(chant-grouping [word - (notes ...)])
+     (phrase word (list notes ...) "-")]
+    [(chant-grouping [word _ (notes ...)])
+     (phrase word (list notes ...) "_")]))
+
+; chant : syntax to create a list of chant-groupings
+(define-syntax-rule (chant [text neumes ...] ...)
+  (list (chant-grouping [text neumes ...]) ...))
 
 ; FUNCTION DEFINITIONS ---------------------
 
@@ -73,32 +86,35 @@
 
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
-  (let ([notes (image-apply-maybe beside (map render-neume (phrase-notes a-phrase)))])
-  (above/align "center"
-               notes
-               (render-hyphenate-text (phrase-text a-phrase) (image-width notes)))))
+  (let* ([neumes (image-apply-maybe beside (map render-neume (phrase-notes a-phrase)))]
+         [neumes-width (image-width neumes)]
+         [rendered-padded-text (pad-text neumes-width (first (phrase-notes a-phrase)) (render-text (phrase-text a-phrase)))]
+         [the-hyphen (phrase-hyphen a-phrase)])
+  (above/align "left" neumes
+               (if (false? the-hyphen) rendered-padded-text
+                   (hyphenate neumes-width rendered-padded-text (if (string=? "-" the-hyphen) HYPHEN
+                                                                     UNDERSCORE))))))
 
-; render-hyphenate-text : string integer -> image
-(define (render-hyphenate-text a-text neumes-width)
-  (match a-text
-    [(regexp #rx"--$") (hyphenate a-text neumes-width HYPHEN)]
-    [(regexp #rx"__$") (hyphenate a-text neumes-width UNDERSCORE)]
-    [else (render-text a-text)]))
-
-; remove-last-two : string -> string
-; Strips off the last two characters of a string. Used for cleaning up hyphenated text before rendering
-; Example: "text__" -> "text"
-(define (remove-last-two a-text)
-  (substring a-text 0 (- (string-length a-text) 2)))
-
-; hyphenate : string integer string -> image
-; receives text, an int that is the image width of the neumes above it, and the string to hyphenate with
-(define (hyphenate a-text neumes-width hyphenate-string)
-  (let* ([text-image (render-text (remove-last-two a-text))]
-         [num-hyp-strings (sub1 (floor (/ (- neumes-width (image-width text-image))
-                                          (image-width (render-text hyphenate-string)))))])
-  (beside text-image
-          (render-text (repeat-string hyphenate-string num-hyp-strings)))))
+; pad-text : int neume image -> image
+; Adds padding to the left of the word so that it is aligned properly with neumes
+; Receives the width of the rendered neumes, the first neume to be aligned under, and the rendered phrase
+(define (pad-text neumes-width first-neume rendered-text)
+  (let ([text-width (image-width rendered-text)]
+        [first-neume-width (image-width (render-neume first-neume))]
+        [default-padding (square (floor (/ (image-width (render-neume apostrophos)) 4)) "solid" "white")])
+    (cond
+      [(> text-width neumes-width) (beside default-padding rendered-text)]
+      [(> text-width first-neume-width) (beside default-padding rendered-text)] ; This case occurs with apostrophos and other small neumes
+      [else (beside (square (/ (- first-neume-width text-width) 2) "solid" "white") 
+                     rendered-text)])))
+  
+; hyphenate : int image string -> image
+; receives int of neumes width, image of rendered padded text, and the string to hyphenate with
+(define (hyphenate neumes-width rendered-padded-text hyphenate-string)
+  (beside rendered-padded-text
+          (render-text (repeat-string hyphenate-string
+                                      (floor (/ (- neumes-width (image-width rendered-padded-text))
+                                                (image-width (render-text hyphenate-string))))))))
 
 ; repeat-string : string integer -> string
 (define (repeat-string a-string an-integer)
@@ -134,4 +150,3 @@
 ; Used for rendering multiple lines of chant
 (define (chant-page list-of-chant)
   (image-apply-maybe ((curry above/align) "left") (map render list-of-chant)))
-
