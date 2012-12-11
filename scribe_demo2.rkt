@@ -17,5 +17,4 @@
   )
 )
 
-; TODO: Bug causing "hear" to render lower than the rest of the text
 (render line1)

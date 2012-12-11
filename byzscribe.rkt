@@ -86,7 +86,7 @@
 
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
-  (let* ([neumes (image-apply-maybe beside (map render-neume (phrase-notes a-phrase)))]
+  (let* ([neumes (image-apply-maybe beside (map render-padded-neume (phrase-notes a-phrase)))]
          [neumes-width (image-width neumes)]
          [rendered-padded-text (pad-text neumes-width (first (phrase-notes a-phrase)) (render-text (phrase-text a-phrase)))]
          [the-hyphen (phrase-hyphen a-phrase)])
@@ -125,6 +125,21 @@
 ; renders a single neume
 (define (render-neume a-neume)
   (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
+
+; render-padded-neume : neume -> image
+; adds vertical padding to a rendered neume
+; Currently using kamele+petaste with klasma as the tallest neume, but there could be taller ones :) Will need to revise.
+(define (render-padded-neume a-neume)
+  (let* ([max-neume-height (image-height (beside (render-neume kamele+petaste) (render-neume klasma-below-right)))]
+         [rendered-neume (render-neume a-neume)]
+         [rendered-neume-height (image-height rendered-neume)])
+    (cond
+      [(< rendered-neume-height max-neume-height)
+       (let* ([half-difference (floor (/ (- max-neume-height rendered-neume-height) 2))]
+              [rect-pad (rectangle 5 half-difference "solid" "white")])
+         (above/align "center" rect-pad rendered-neume rect-pad))]
+      [else rendered-neume] ; TODO: Currently doesn't handle instances where rendered-neume is larger than max-neume-height 
+    )))
 
 ; render-text : string -> image
 (define (render-text a-text)
