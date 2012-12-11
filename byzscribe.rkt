@@ -86,14 +86,17 @@
 
 ; render-phrase : phrase -> image
 (define (render-phrase a-phrase)
-  (let* ([neumes (image-apply-maybe beside (map render-padded-neume (phrase-notes a-phrase)))]
-         [neumes-width (image-width neumes)]
+  (let* ([rendered-neumes (render-phrase-neumes (phrase-notes a-phrase))]
+         [neumes-width (image-width rendered-neumes)]
          [rendered-padded-text (pad-text neumes-width (first (phrase-notes a-phrase)) (render-text (phrase-text a-phrase)))]
          [the-hyphen (phrase-hyphen a-phrase)])
-  (above/align "left" neumes
-               (if (false? the-hyphen) rendered-padded-text
-                   (hyphenate neumes-width rendered-padded-text (if (string=? "-" the-hyphen) HYPHEN
-                                                                     UNDERSCORE))))))
+  (above/align "left"
+               rendered-neumes
+               (cond
+                 [(false? the-hyphen) rendered-padded-text]
+                 [else (hyphenate neumes-width rendered-padded-text (which-hyphenate-string the-hyphen))]))))
+
+; --- Text rendering functions -----------------------------------
 
 ; pad-text : int neume image -> image
 ; Adds padding to the left of the word so that it is aligned properly with neumes
@@ -104,15 +107,25 @@
         [default-padding (square (floor (/ (image-width (render-neume apostrophos)) 4)) "solid" "white")])
     (cond
       [(> text-width neumes-width) (beside default-padding rendered-text)]
-      [(> text-width first-neume-width) (beside default-padding rendered-text)] ; This case occurs with apostrophos and other small neumes
+      ; Following case occurs with apostrophos and other small neumes; currently handled the same as above
+      [(> text-width first-neume-width) (beside default-padding rendered-text)]
       [else (beside (square (/ (- first-neume-width text-width) 2) "solid" "white") 
                      rendered-text)])))
+
+; which-hyphenate-string : string -> string
+; Converts - or _ to appropriate constant string HYPHEN or UNDERSCORE
+(define (which-hyphenate-string hyphenate-string)
+  (cond
+    [(string=? hyphenate-string "-") HYPHEN]
+    [(string=? hyphenate-string "_") UNDERSCORE]
+    [else HYPHEN]))
   
 ; hyphenate : int image string -> image
 ; receives int of neumes width, image of rendered padded text, and the string to hyphenate with
 (define (hyphenate neumes-width rendered-padded-text hyphenate-string)
   (beside rendered-padded-text
           (render-text (repeat-string hyphenate-string
+                                      ; calculate how many hyphenate-strings to append
                                       (floor (/ (- neumes-width (image-width rendered-padded-text))
                                                 (image-width (render-text hyphenate-string))))))))
 
@@ -121,10 +134,15 @@
   (if (= 1 an-integer) a-string
       (string-append a-string (repeat-string a-string (sub1 an-integer)))))
 
-; render-neume : neume -> image
-; renders a single neume
-(define (render-neume a-neume)
-  (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
+; render-text : string -> image
+(define (render-text a-text)
+  (text/font a-text TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+
+; --- Neume rendering functions -----------------------------------
+
+; render-phrase-neumes : phrase-notes -> image
+(define (render-phrase-neumes the-phrase-notes)
+  (image-apply-maybe beside (map render-padded-neume the-phrase-notes)))
 
 ; render-padded-neume : neume -> image
 ; adds vertical padding to a rendered neume
@@ -135,15 +153,18 @@
          [rendered-neume-height (image-height rendered-neume)])
     (cond
       [(< rendered-neume-height max-neume-height)
-       (let* ([half-difference (floor (/ (- max-neume-height rendered-neume-height) 2))]
-              [rect-pad (rectangle 5 half-difference "solid" "white")])
-         (above/align "center" rect-pad rendered-neume rect-pad))]
-      [else rendered-neume] ; TODO: Currently doesn't handle instances where rendered-neume is larger than max-neume-height 
-    )))
+        (let* ([half-difference (floor (/ (- max-neume-height rendered-neume-height) 2))]
+               [rect-pad (rectangle 5 half-difference "solid" "white")])
+          (above/align "center" rect-pad rendered-neume rect-pad))]
+      ; TODO: Currently doesn't handle instances where rendered-neume is larger than max-neume-height 
+      [else rendered-neume])))
 
-; render-text : string -> image
-(define (render-text a-text)
-  (text/font a-text TEXT-SIZE TEXT-COLOR TEXT-FONT 'modern 'normal 'normal #f))
+; render-neume : neume -> image
+; renders a single neume
+(define (render-neume a-neume)
+  (text/font (neume-character-code a-neume) NEUME-SIZE (neume-color a-neume) (neume-font a-neume) 'modern 'normal 'normal #f))
+
+; --- Utility functions -----------------------------------
 
 ; print-all-neumes : hash -> list-of-images
 ; call using default hash with (print-all-neumes neume-names)
@@ -156,10 +177,9 @@
 ; Because it is a hash, it is unordered output. In the future, it'd be nice to have a better function for this
 ; that has a more ordered output for documentation, but this will suffice for now.
 (define (list-all-neumes neume-hash)
-  (for/list ([(key value) neume-hash])
-    (if (neume-modifier? value)
-        (render (list (phrase (first (neume-aliases value)) (list ison value))))
-        (render (list (phrase (first (neume-aliases value)) (list value)))))))
+  (for/list ([(key value) neume-hash]) 
+    (if (neume-modifier? value) (render (list (phrase (first (neume-aliases value)) (list ison value) false)))
+        (render (list (phrase (first (neume-aliases value)) (list value) false))))))
 
 ; chant-page : list-of-chant -> image
 ; Used for rendering multiple lines of chant
