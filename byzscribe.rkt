@@ -69,16 +69,9 @@
 (define-syntax-rule (chant [text neumes ...] ...)
   (list (chant-grouping [text neumes ...]) ...))
 
-; FUNCTION DEFINITIONS ---------------------
+; FUNCTION DEFINITIONS -----------
 
-; image-apply-maybe : image-composition-function list-of-images -> image
-; Applys an image composition function that expects two arguments to a list. If there is only one element in the list,
-; simply returns that element (but not as a list).
-; Used when functions like beside and above, which expect two arguments, might only receive one argument.
-; Example: when a user wants to render a phrase with only a single note, beside will not work.
-(define (image-apply-maybe a-function a-list)
-  (if (= (length a-list) 1) (first a-list)
-      (apply a-function a-list)))
+; --- User functions -------------
 
 ; render : list of phrases -> image
 (define (render chant-list)
@@ -96,6 +89,26 @@
                  [(false? the-hyphen) rendered-padded-text]
                  [else (hyphenate neumes-width rendered-padded-text (which-hyphenate-string the-hyphen))]))))
 
+; chant-page : list-of-chant -> image
+; Used for rendering multiple lines of chant
+(define (chant-page list-of-chant)
+  (image-apply-maybe ((curry above/align) "left") (map render list-of-chant)))
+
+; print-all-neumes : hash -> list-of-images
+; call using default hash with (print-all-neumes neume-names)
+(define (print-all-neumes neume-hash)
+  (apply above/align "left" (list-all-neumes neume-hash)))
+
+; list-all-neumes: hash -> list-of-images
+; given a names hash generate a list of images of every neume and its name
+; will insert an ison for neumes that modify a preceeding neume (otherwise it will not print)
+; Because it is a hash, it is unordered output. In the future, it'd be nice to have a better function for this
+; that has a more ordered output for documentation, but this will suffice for now.
+(define (list-all-neumes neume-hash)
+  (for/list ([(key value) neume-hash]) 
+    (if (neume-modifier? value) (render (list (phrase (first (neume-aliases value)) (list ison value) false)))
+        (render (list (phrase (first (neume-aliases value)) (list value) false))))))
+
 ; --- Text rendering functions -----------------------------------
 
 ; pad-text : int neume image -> image
@@ -104,12 +117,12 @@
 (define (pad-text neumes-width first-neume rendered-text)
   (let ([text-width (image-width rendered-text)]
         [first-neume-width (image-width (render-neume first-neume))]
-        [default-padding (square (floor (/ (image-width (render-neume apostrophos)) 4)) "solid" "white")])
+        [default-padding (rectangle (floor (/ (image-width (render-neume apostrophos)) 4)) 1 "solid" "white")])
     (cond
       [(> text-width neumes-width) (beside default-padding rendered-text)]
       ; Following case occurs with apostrophos and other small neumes; currently handled the same as above
       [(> text-width first-neume-width) (beside default-padding rendered-text)]
-      [else (beside (square (/ (- first-neume-width text-width) 2) "solid" "white") 
+      [else (beside (rectangle (/ (- first-neume-width text-width) 2) 1 "solid" "white") 
                      rendered-text)])))
 
 ; which-hyphenate-string : string -> string
@@ -156,7 +169,7 @@
         (let* ([half-difference (floor (/ (- max-neume-height rendered-neume-height) 2))]
                [rect-pad (rectangle 5 half-difference "solid" "white")])
           (above/align "center" rect-pad rendered-neume rect-pad))]
-      ; TODO: Currently doesn't handle instances where rendered-neume is larger than max-neume-height 
+      ; TODO: Currently doesn't specifically address instances where rendered-neume is larger than max-neume-height 
       [else rendered-neume])))
 
 ; render-neume : neume -> image
@@ -166,22 +179,11 @@
 
 ; --- Utility functions -----------------------------------
 
-; print-all-neumes : hash -> list-of-images
-; call using default hash with (print-all-neumes neume-names)
-(define (print-all-neumes neume-hash)
-  (apply above/align "left" (list-all-neumes neume-hash)))
-
-; list-all-neumes: hash -> list-of-images
-; given a names hash generate a list of images of every neume and its name
-; will insert an ison for neumes that modify a preceeding neume (otherwise it will not print)
-; Because it is a hash, it is unordered output. In the future, it'd be nice to have a better function for this
-; that has a more ordered output for documentation, but this will suffice for now.
-(define (list-all-neumes neume-hash)
-  (for/list ([(key value) neume-hash]) 
-    (if (neume-modifier? value) (render (list (phrase (first (neume-aliases value)) (list ison value) false)))
-        (render (list (phrase (first (neume-aliases value)) (list value) false))))))
-
-; chant-page : list-of-chant -> image
-; Used for rendering multiple lines of chant
-(define (chant-page list-of-chant)
-  (image-apply-maybe ((curry above/align) "left") (map render list-of-chant)))
+; image-apply-maybe : image-composition-function list-of-image(s) -> image
+; Applys an image composition function that expects two arguments to a list. If there is only one element in the list,
+; simply returns that element (but not as a list).
+; Used when functions like beside and above, which expect two arguments, might only receive one argument.
+; Example: when a user wants to render a phrase with only a single note, (beside) will not work.
+(define (image-apply-maybe a-function a-list)
+  (if (= (length a-list) 1) (first a-list)
+      (apply a-function a-list)))
