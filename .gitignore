@@ -1,6 +1,9 @@
 # Ignore all bin directories
 bin
 
+# Ignore Mac metadata
+.DS_Store
+
 # Ignore all files ending with ~
 *~
 
