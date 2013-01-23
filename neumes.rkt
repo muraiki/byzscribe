@@ -115,6 +115,14 @@
   NEUME-COLOR
   )
 
+(define-neume oligon+kentemata
+  (list "oligon+kentemata")
+  "BZ Byzantina"
+  "v"
+  #f
+  NEUME-COLOR
+  )
+
 (define-neume oligon+kentemata-below
   (list "oligon+kentemata-below")
   "BZ Byzantina"
@@ -357,6 +365,23 @@
   NEUME-COLOR
   )
 
+(define-neume ypporoe+gorgon+peristagmeni-left
+  (list "ypporoe+gorgon+peristagmeni-left")
+  "BZ Loipa"
+  "w"
+  #f
+  NEUME-COLOR
+  )
+
+(define-neume ypporoe+digorgon+peristagmeni-left
+  (list "ypporoe+digorgon+peristagmeni-left")
+  "BZ Loipa"
+  "E"
+  #f
+  NEUME-COLOR
+  )
+
+
 (define-neume ypporoe+petaste
   (list "ypporoe+petaste" "yp-f")
   "BZ Byzantina"
@@ -504,6 +529,14 @@
   TIME-MODIFIER-COLOR
   )
 
+(define-neume digorgon-right+peristagmeni-left
+  (list "digorgon-right+peristagmeni-left")
+  "BZ Loipa"
+  "#"
+  #t
+  TIME-MODIFIER-COLOR
+  )
+
 (define-neume trigorgon
   (list "trigorgon")
   "BZ Palaia"
@@ -528,6 +561,21 @@
   TIME-MODIFIER-COLOR
   )
 
+(define-neume vareia
+  (list "vareia")
+  "BZ Byzantina"
+  "\\"
+  #f
+  NEUME-COLOR
+  )
+
+(define-neume siopein
+  (list "siopein")
+  "BZ Loipa"
+  "\\"
+  #f
+  NEUME-COLOR
+  )
 
 ; Martyria ---------------------
 
@@ -535,6 +583,14 @@
   (list "martyria-ni")
   "BZ Byzantina"
   "7&"
+  #f
+  MARTYRIA-COLOR
+  )
+
+(define-neume martyria-thi
+  (list "martyria-thi")
+  "BZ Byzantina"
+  "3&"
   #f
   MARTYRIA-COLOR
   )
